@@ -129,7 +129,7 @@ class TaskResult(Task, TaskResultMeta):
             d_i = self.trace[var_name]
             means.append(np.mean(d_i))
             sds.append(np.std(d_i))
-            hpd_2_5, hpd_97_5 = pm.hpd(d_i)
+            hpd_2_5, hpd_97_5 = pm.hpd(d_i.to_numpy())
             hpd_2_5s.append(hpd_2_5)
             hpd_97_5s.append(hpd_97_5)
 
