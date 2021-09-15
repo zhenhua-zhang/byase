@@ -32,6 +32,8 @@ _STATS_DIR_NAME = 'stats'
 _TRACE_DIR_NAME = 'trace'
 _HEAD_MEAN = 'Mean'
 _HEAD_HPD_WIDTH = '95% HPD Width'
+_HEAD_HPD_LFBD = '95% HPD Left'
+_HEAD_HPD_RTBD = '95% HPD Right'
 
 
 class StatsError(Exception):
@@ -89,6 +91,8 @@ class StatsTool(TaskResultMeta):
             _var_stats = _record.trace_stats.loc[_var_name]
             _data.append(_var_stats['mean'])
             _data.append(_var_stats['hpd_97.5'] - _var_stats['hpd_2.5'])
+            _data.append(_var_stats['hpd_2.5'])
+            _data.append(_var_stats['hpd_97.5'])
 
         def _add_row(_d: List[list], _cols: list, _row: list):
             assert len(_d) == len(_cols) == len(_row)
@@ -113,7 +117,7 @@ class StatsTool(TaskResultMeta):
                     for i, j in self.delta_iterator(ploidy):
                         for cols, d in [(gene_cols, gene_d),
                                         (iso_cols, iso_d)]:
-                            for measure in [_HEAD_MEAN, _HEAD_HPD_WIDTH]:
+                            for measure in [_HEAD_MEAN, _HEAD_HPD_WIDTH, _HEAD_HPD_LFBD, _HEAD_HPD_RTBD]:
                                 cols.append('Difference (Allele {} & {}) {}'.format(i+1, j+1, measure))
                                 d.append([])
                 else:
